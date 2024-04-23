@@ -30,6 +30,26 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
+const user = [
+    {
+        name: 'John Doe',
+        avatar: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+        title: "Shrimp and Chorizo Paella",
+        subheader: 'September 14, 2016',
+        image: '../../../paella.jpg',
+        typography: "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like."
+    },
+    {
+        name: 'Mary Jane',
+        avatar: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+        title: "Pizza chorizo piquant",
+        subheader: '25/10/2024',
+        image: '../../../Pizza.webp',//
+        typography: "A base d'une délicieuse pâte à pizza maison avec une sauce tomate minute, " +
+            "de la mozza di buffala et des chorizos piquants, cette pizza est un vrai délice."
+    },
+]
+
 export default function RecipeReviewCard() {
     const [expanded, setExpanded] = React.useState(false);
 
@@ -37,12 +57,19 @@ export default function RecipeReviewCard() {
         setExpanded(!expanded);
     };
 
+    const [index, setIndex] = React.useState(0)
+
+    const handleUserClick = () => {
+        //setIndex(index + 1)
+        setIndex(1)
+    }
+
     return (
         <Card sx={{ maxWidth: '50%', margin: 'auto' }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                        {user[index].name[0]}
                     </Avatar>
                 }
                 action={
@@ -50,28 +77,26 @@ export default function RecipeReviewCard() {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
+                title={user[index].title}
+                subheader={user[index].subheader}
             />
             <CardMedia
                 component="img"
                 height="194"
-                image="../../../paella.jpg"
-                alt="Paella dish"
+                image={user[index].image}
+                alt={user[index].title}
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
+                    {user[index].typography}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="validate">
-                    <DoDisturbIcon fontSize={"large"}/>
+                <IconButton aria-label="refuse">
+                    <DoDisturbIcon fontSize={"large"} onClick = {handleUserClick}/>
                 </IconButton>
                 <IconButton aria-label="validate">
-                    <DoneIcon fontSize={"large"}/>
+                    <DoneIcon fontSize={"large"} onClick = {handleUserClick}/>
                 </IconButton>
                 <ExpandMore
                     expand={expanded}
