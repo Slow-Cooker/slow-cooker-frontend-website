@@ -6,6 +6,6 @@ import AppBar from './components/AppBar/AppBar.tsx'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <AppBar />
-    <App />
+      <App />
   </React.StrictMode>,
 )
