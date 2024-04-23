@@ -28,7 +28,7 @@ export default function LoginFinal() {
             setToken(responseData.access_token);
             console.log('Login successful:', responseData);
             if (responseData.user.role === 'Admin') {
-                navigate('/home');
+                navigate('/verify');
             }else {
                 setError("You are not an Admin");
             }

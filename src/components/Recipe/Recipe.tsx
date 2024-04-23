@@ -92,11 +92,11 @@ export default function RecipeReviewCard() {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="refuse">
-                    <DoDisturbIcon fontSize={"large"} onClick = {handleUserClick}/>
+                <IconButton aria-label="refuse" onClick={handleUserClick}>
+                    <DoDisturbIcon fontSize="large" />
                 </IconButton>
-                <IconButton aria-label="validate">
-                    <DoneIcon fontSize={"large"} onClick = {handleUserClick}/>
+                <IconButton aria-label="validate" onClick={handleUserClick}>
+                    <DoneIcon fontSize="large" />
                 </IconButton>
                 <ExpandMore
                     expand={expanded}
