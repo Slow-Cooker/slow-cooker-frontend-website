@@ -5,23 +5,36 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import Link from '@mui/joy/Link';
-import {useState} from "react";
-import {postData} from "../../api/call.ts";
+import { useState } from "react";
+import { postData } from "../../api/call.ts";
+import { atom } from "jotai";
+import { useAtom } from "jotai";
+import { useNavigate } from 'react-router-dom';
+
+const jwtToken = atom('');
 export default function LoginFinal() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // @ts-ignore
+    const [token, setToken] = useAtom(jwtToken);
+    const [error, setError] = useState(''); // State to track login error
 
     const handleLogin = async () => {
-        const apiUrl = 'http://your-api-url.com/api/login'; // Replace with your API endpoint
+        const apiUrl = 'http://localhost:3000/users/auth/login';
         const requestBody = { email, password };
         try {
             const responseData = await postData(apiUrl, requestBody);
+            setToken(responseData.access_token);
             console.log('Login successful:', responseData);
-            // Handle successful login (e.g., store authentication token, redirect user)
+            if (responseData.user.role === 'Admin') {
+                navigate('/home');
+            }else {
+                setError("You are not an Admin");
+            }
         } catch (error) {
             console.error('Login failed:', error);
-            // Handle login error (e.g., display error message to user)
+            setError("Invalid email or password. Please try again."); // Set error message
         }
     };
 
@@ -31,10 +44,10 @@ export default function LoginFinal() {
             <Sheet
                 sx={{
                     width: "100%",
-                    mx: 'center', // margin left & right
-                    my: 4, // margin top & bottom
-                    py: 3, // padding top & bottom
-                    px: 4, // padding left & right
+                    mx: 'center',
+                    my: 4,
+                    py: 3,
+                    px: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 2,
@@ -71,16 +84,14 @@ export default function LoginFinal() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </FormControl>
-                <Button sx={{ mt: 1, backgroundColor:"#E88E54FF"}} onClick={handleLogin}>
+                {error && (
+                    <Typography sx={{ color: 'red', mt: 1 }}>
+                        {error}
+                    </Typography>
+                )}
+                <Button sx={{ mt: 1, backgroundColor: "#E88E54FF" }} onClick={handleLogin}>
                     Log in
                 </Button>
-                <Typography
-                    endDecorator={<Link href="/sign-up">Sign up</Link>}
-                    fontSize="sm"
-                    sx={{ alignSelf: 'center'}}
-                >
-                    Don&apos;t have an account?
-                </Typography>
             </Sheet>
         </main>
     );
