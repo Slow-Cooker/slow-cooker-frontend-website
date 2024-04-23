@@ -6,10 +6,10 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
+import {AccountCircle} from "@mui/icons-material";
+import { Link } from 'react-router-dom';
 
 const StyledAppBar = styled(AppBar)({
     backgroundColor: "#E88E54FF",
@@ -61,6 +61,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+function MoreIcon() {
+    return null;
+}
+
 export default function PrimarySearchAppBar() {
     return (
         <StyledAppBar position="static">
@@ -81,9 +85,16 @@ export default function PrimarySearchAppBar() {
                 <IconButton size="large" aria-label="show notifications" color="inherit">
                     <NotificationsIcon />
                 </IconButton>
-                <IconButton size="large" edge="end" aria-label="account of current user" color="inherit">
+                <Link to="/account" style={{ textDecoration: 'none' }}>
+                <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="account of current user"
+                    color="inherit"
+                >
                     <AccountCircle />
                 </IconButton>
+                </Link>
                 <IconButton size="large" aria-label="show more" color="inherit">
                     <MoreIcon />
                 </IconButton>
