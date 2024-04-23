@@ -14,8 +14,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneIcon from '@mui/icons-material/Done';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import {handleRecipe} from './helpers.ts';
-import {user} from './helpers.ts';
+import {deleteRecipe, handleRecipe, patchRecipe} from './helpers.ts';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -51,8 +50,8 @@ export default function RecipeReviewCard() {
         <Card sx={{ maxWidth: '50%', margin: 'auto' }}>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {user[index].name[0]}
+                    <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
+                        <img src={recipe[index].owner.profilepicture} alt={recipe[index].owner.username} width="40" height="40" border-radius={'50%'}/>
                     </Avatar>
                 }
                 action={
@@ -61,24 +60,24 @@ export default function RecipeReviewCard() {
                     </IconButton>
                 }
                 title={recipe[index].name_recipe}
-                subheader={user[index].subheader}
+                subheader={recipe[index].owner.username}
             />
             <CardMedia
                 component="img"
                 height="194"
                 image={recipe[index].image}
-                alt={user[index].title}
+                alt={recipe[index].name_recipe}
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {user[index].typography}
+                    {recipe[index].steps}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="refuse" onClick={handleUserClick}>
+                <IconButton aria-label="refuse" onClick={() => { deleteRecipe(recipe[index].id_recipe); handleUserClick();}}>
                     <DoDisturbIcon fontSize="large" />
                 </IconButton>
-                <IconButton aria-label="validate" onClick={handleUserClick}>
+                <IconButton aria-label="validate" onClick={() => {patchRecipe(recipe[index].id_recipe); handleUserClick();}}>
                     <DoneIcon fontSize="large" />
                 </IconButton>
                 <ExpandMore
