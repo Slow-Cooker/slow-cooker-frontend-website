@@ -80,3 +80,24 @@ export async function patchData(url: string, body: any) {
         throw new Error('Failed to put data');
     }
 }
+
+export interface UserData {
+    id: number;
+    username: string;
+    email: string;
+    role: string;
+    profilepicture: string;
+    recipe: RecipeData[];
+    selection: SelectionData[];
+}
+export interface RecipeData {
+    name_recipe: number;
+    steps: string;
+    category: string;
+    difficulty: string;
+}
+export interface SelectionData {
+    recipes: RecipeData[];
+    user: UserData;
+    name: string;
+}

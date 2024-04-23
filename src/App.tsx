@@ -4,21 +4,24 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import ModeToggle from './components/DarkMode/DarkMode';
 import RecipeReviewCard from "./components/Recipe/Recipe.tsx";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AccountPage from "./components/AccountPage/AccountPage.tsx";
+import AppBar from "./components/AppBar/AppBar.tsx";
 
-function App() {
-    return (
-        <>
-            <CssVarsProvider>
-                <ModeToggle />
-            </CssVarsProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<LoginContainer />} />
-                        <Route path="/verify" element={<RecipeReviewCard />} />
-                    </Routes>
-                </Router>
-        </>
-    );
+export function App() {
+    return (<>
+        <CssVarsProvider>
+            <ModeToggle />
+        </CssVarsProvider>
+            <Router>
+                <AppBar />
+                <Routes>
+                    <Route path="/" element={<LoginContainer />} />
+                    <Route path="/verify" element={<RecipeReviewCard />} />
+                    <Route path="/account" element={<AccountPage />} />
+                </Routes>
+            </Router>
+
+    </>);
 }
 
 
@@ -29,5 +32,3 @@ function LoginContainer() {
         </div>
     );
 }
-
-export default App
