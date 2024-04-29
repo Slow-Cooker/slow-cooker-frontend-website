@@ -1,7 +1,7 @@
 import {getData, deleteData, patchData} from "../../api/call.ts";
 
 export const handleRecipe = async () => {
-    const apiUrl = 'http://localhost:3000/recipe/';
+    const apiUrl = 'http://localhost:3000/recipes/';
     //console.log('apiUrl:', apiUrl);
     try {
         const responseData = await getData(apiUrl);
@@ -14,7 +14,7 @@ export const handleRecipe = async () => {
 }
 
 export const deleteRecipe = async (id: string) => {
-    const apiUrl = `http://localhost:3000/recipe/${id}`;
+    const apiUrl = `http://localhost:3000/recipes/${id}`;
     try {
         const responseData = await deleteData(apiUrl);
         console.log('Recipe deleted:', responseData);
@@ -26,7 +26,7 @@ export const deleteRecipe = async (id: string) => {
 }
 
 export const patchRecipe = async (id: string) => {
-    const apiUrl = `http://localhost:3000/recipe/${id}`;
+    const apiUrl = `http://localhost:3000/recipes/${id}`;
     const body = {validate: true};
     try {
         const responseData = await patchData(apiUrl, body);

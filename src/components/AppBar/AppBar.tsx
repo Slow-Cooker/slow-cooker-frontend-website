@@ -61,9 +61,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-function MoreIcon() {
-    return null;
-}
 
 export default function PrimarySearchAppBar() {
     return (
@@ -96,7 +93,6 @@ export default function PrimarySearchAppBar() {
                 </IconButton>
                 </Link>
                 <IconButton size="large" aria-label="show more" color="inherit">
-                    <MoreIcon />
                 </IconButton>
             </StyledToolbar>
         </StyledAppBar>
