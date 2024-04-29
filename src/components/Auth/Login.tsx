@@ -16,7 +16,7 @@ export default function LoginFinal() {
     const [error, setError] = useState(''); // State to track login error
 
     const handleLogin = async () => {
-        const apiUrl = 'http://localhost:3000/users/auth/login';
+        const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/users/auth/login`;
         const requestBody = { email, password };
         try {
             const responseData = await postData(apiUrl, requestBody);

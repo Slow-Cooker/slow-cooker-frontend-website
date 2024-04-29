@@ -3,7 +3,7 @@ import { getData, RecipeData, UserData } from '../../api/call.ts';
 import { Typography, CircularProgress, Paper, Avatar, Grid } from '@mui/material';
 
 const AccountPage: React.FC = () => {
-    const apiUrl = 'http://localhost:3000/users/me';
+    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/users/me`;
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
