@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import {AccountCircle} from "@mui/icons-material";
 import {Link, useNavigate} from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import * as React from 'react';
 
 const StyledAppBar = styled(AppBar)({
     backgroundColor: "#E88E54FF",
@@ -80,12 +83,54 @@ export default function PrimarySearchAppBar() {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const AuthenticatedAccountCircle = withAuth(AccountCircle);
 
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const navigate = useNavigate();
+
+    const handleRecipe =  () => {
+        navigate('/verify');
+    };
+
+    const handleComment =  () => {
+        navigate('/comment');
+    };
+
+    const handleLogOut =  () => {
+        navigate('/');
+    };
+
     return (
         <StyledAppBar position="static">
             <StyledToolbar>
-                <IconButton size="large" edge="start" color="inherit" aria-label="open drawer">
+                <IconButton size="large" edge="start" color="inherit" aria-label="open drawer"
+                            id="basic-button"
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClick}
+                >
                     <MenuIcon />
                 </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem onClick={() => { handleClose(); handleRecipe(); }}>Recettes</MenuItem>
+                    <MenuItem onClick={() => { handleClose(); handleComment(); }}>Commentaires</MenuItem>
+                    <MenuItem onClick={() => { handleClose(); handleLogOut(); }}>Déconnexion</MenuItem>
+                </Menu>
                 <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
                     SLOW COOKER
                 </Typography>

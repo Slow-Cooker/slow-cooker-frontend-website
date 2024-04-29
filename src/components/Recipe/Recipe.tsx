@@ -20,6 +20,21 @@ interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
 
+interface Recipe {
+    length: number;
+    owner: {
+        profilepicture: string;
+        username: string;
+    };
+    name_recipe: string;
+    image: string;
+    steps: string;
+    id_recipe: string;
+    difficulty: string;
+    category: string;
+    duration: string;
+}
+
 const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -31,10 +46,10 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-const recipe =  await handleRecipe();
 
 export default function RecipeReviewCard() {
-    const [expanded, setExpanded] = React.useState(false);
+    const [recipe, setRecipe] = React.useState<Recipe[] | null>(null);    const [expanded, setExpanded] = React.useState(false);
+    const [reload, setReload] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -44,9 +59,21 @@ export default function RecipeReviewCard() {
 
     const handleUserClick = () => {
         setIndex(index + 1)
+        if (recipe != null && index >= recipe.length-1) {
+            setReload(!reload);
+        }
     }
 
-    if (recipe === undefined || recipe === null || recipe.length === 0){
+    React.useEffect(() => {
+        const fetchRecipe = async () => {
+            const result = await handleRecipe();
+            setRecipe(result);
+        };
+
+        fetchRecipe();
+    }, [reload]);
+
+    if (recipe === undefined || recipe === null || recipe.length === 0) {
         return (
             <Card sx={{ maxWidth: '21%', marginTop: '20%', marginLeft:'40%'}}>
                 <CardContent>
@@ -62,7 +89,7 @@ export default function RecipeReviewCard() {
                 <CardHeader
                     avatar={
                         <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                            <img src={recipe[index].owner.profilepicture} alt={recipe[index].owner.username} width="40" height="40" border-radius={'50%'}/>
+                            <img src={recipe[index]?.owner?.profilepicture} alt={recipe[index]?.owner?.username} width="40" height="40" border-radius={'50%'}/>
                         </Avatar>
                     }
                     action={
@@ -70,25 +97,25 @@ export default function RecipeReviewCard() {
                             <MoreVertIcon />
                         </IconButton>
                     }
-                    title={recipe[index].name_recipe}
-                    subheader={recipe[index].owner.username}
+                    title={recipe[index]?.name_recipe}
+                    subheader={recipe[index]?.owner?.username}
                 />
                 <CardMedia
                     component="img"
                     height="194"
-                    image={recipe[index].image}
-                    alt={recipe[index].name_recipe}
+                    image={recipe[index]?.image}
+                    alt={recipe[index]?.name_recipe}
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        {recipe[index].steps}
+                        {recipe[index]?.steps}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="refuse" onClick={() => { deleteRecipe(recipe[index].id_recipe); handleUserClick();}}>
+                    <IconButton aria-label="refuse" onClick={() => { deleteRecipe(recipe[index]?.id_recipe); handleUserClick();}}>
                         <DoDisturbIcon fontSize="large" />
                     </IconButton>
-                    <IconButton aria-label="validate" onClick={() => {patchRecipe(recipe[index].id_recipe); handleUserClick();}}>
+                    <IconButton aria-label="validate" onClick={() => {patchRecipe(recipe[index]?.id_recipe); handleUserClick();}}>
                         <DoneIcon fontSize="large" />
                     </IconButton>
                     <ExpandMore
@@ -104,10 +131,10 @@ export default function RecipeReviewCard() {
                     <CardContent>
                         <Typography fontWeight={"bold"} paragraph>Résumé</Typography>
                         <Typography style={{ fontStyle: "italic" }} paragraph>
-                            Difficulté : {recipe[index].difficulty}
+                            Difficulté : {recipe[index]?.difficulty}
                         </Typography>
-                        <Typography fontStyle={"italic"} paragraph>Catégorie : {recipe[index].category}</Typography>
-                        <Typography fontStyle={"italic"} paragraph>Durée : {recipe[index].duration}</Typography>
+                        <Typography fontStyle={"italic"} paragraph>Catégorie : {recipe[index]?.category}</Typography>
+                        <Typography fontStyle={"italic"} paragraph>Durée : {recipe[index]?.duration}</Typography>
                     </CardContent>
                 </Collapse>
             </Card>

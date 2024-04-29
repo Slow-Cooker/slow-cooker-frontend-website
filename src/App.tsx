@@ -6,6 +6,7 @@ import RecipeReviewCard from "./components/Recipe/Recipe.tsx";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AccountPage from "./components/AccountPage/AccountPage.tsx";
 import AppBar from "./components/AppBar/AppBar.tsx";
+import Comment from "./components/Comment/Comment.tsx";
 
 export function App() {
     return (<>
@@ -18,6 +19,7 @@ export function App() {
                     <Route path="/" element={<LoginContainer />} />
                     <Route path="/verify" element={<RecipeReviewCard />} />
                     <Route path="/account" element={<AccountPage />} />
+                    <Route path={"/comment"} element={<Comment />} />
                 </Routes>
             </Router>
 

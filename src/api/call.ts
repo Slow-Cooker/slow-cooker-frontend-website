@@ -51,8 +51,17 @@ export async function deleteData(url: string) {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const data = await response.json();
-        return data;
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Check if the response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
     } catch (error) {
         console.error('Error deleting data:', error);
         throw new Error('Failed to delete data');
