@@ -21,7 +21,6 @@ export default function LoginFinal() {
         try {
             const responseData = await postData(apiUrl, requestBody);
             localStorage.setItem('token', responseData.token);
-            console.log('Login successful:', responseData);
             if (responseData.user.role === 'Admin') {
                 navigate('/verify');
             }else {

@@ -46,59 +46,71 @@ export default function RecipeReviewCard() {
         setIndex(index + 1)
     }
 
-    return (
-        <Card sx={{ maxWidth: '50%', margin: 'auto' }}>
-            <CardHeader
-                avatar={
-                    <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                        <img src={recipe[index].owner.profilepicture} alt={recipe[index].owner.username} width="40" height="40" border-radius={'50%'}/>
-                    </Avatar>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={recipe[index].name_recipe}
-                subheader={recipe[index].owner.username}
-            />
-            <CardMedia
-                component="img"
-                height="194"
-                image={recipe[index].image}
-                alt={recipe[index].name_recipe}
-            />
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    {recipe[index].steps}
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="refuse" onClick={() => { deleteRecipe(recipe[index].id_recipe); handleUserClick();}}>
-                    <DoDisturbIcon fontSize="large" />
-                </IconButton>
-                <IconButton aria-label="validate" onClick={() => {patchRecipe(recipe[index].id_recipe); handleUserClick();}}>
-                    <DoneIcon fontSize="large" />
-                </IconButton>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+    if (recipe === undefined || recipe === null || recipe.length === 0){
+        return (
+            <Card sx={{ maxWidth: '21%', marginTop: '20%', marginLeft:'40%'}}>
                 <CardContent>
-                    <Typography fontWeight={"bold"} paragraph>Résumé</Typography>
-                    <Typography style={{ fontStyle: "italic" }} paragraph>
-                        Difficulté : {recipe[index].difficulty}
+                    <Typography variant="body2" color="text.secondary">
+                       Bravo ! Toutes les recettes ont été validées ^^
                     </Typography>
-                    <Typography fontStyle={"italic"} paragraph>Catégorie : {recipe[index].category}</Typography>
-                    <Typography fontStyle={"italic"} paragraph>Durée : {recipe[index].duration}</Typography>
                 </CardContent>
-            </Collapse>
-        </Card>
-    );
+            </Card>
+        );
+    } else {
+        return (
+            <Card sx={{ maxWidth: '50%', margin: 'auto' }}>
+                <CardHeader
+                    avatar={
+                        <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
+                            <img src={recipe[index].owner.profilepicture} alt={recipe[index].owner.username} width="40" height="40" border-radius={'50%'}/>
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                    title={recipe[index].name_recipe}
+                    subheader={recipe[index].owner.username}
+                />
+                <CardMedia
+                    component="img"
+                    height="194"
+                    image={recipe[index].image}
+                    alt={recipe[index].name_recipe}
+                />
+                <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                        {recipe[index].steps}
+                    </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="refuse" onClick={() => { deleteRecipe(recipe[index].id_recipe); handleUserClick();}}>
+                        <DoDisturbIcon fontSize="large" />
+                    </IconButton>
+                    <IconButton aria-label="validate" onClick={() => {patchRecipe(recipe[index].id_recipe); handleUserClick();}}>
+                        <DoneIcon fontSize="large" />
+                    </IconButton>
+                    <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <Typography fontWeight={"bold"} paragraph>Résumé</Typography>
+                        <Typography style={{ fontStyle: "italic" }} paragraph>
+                            Difficulté : {recipe[index].difficulty}
+                        </Typography>
+                        <Typography fontStyle={"italic"} paragraph>Catégorie : {recipe[index].category}</Typography>
+                        <Typography fontStyle={"italic"} paragraph>Durée : {recipe[index].duration}</Typography>
+                    </CardContent>
+                </Collapse>
+            </Card>
+        );
+    }
 }
