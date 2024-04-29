@@ -1,4 +1,4 @@
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +9,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Box from '@mui/material/Box';
 import {AccountCircle} from "@mui/icons-material";
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const StyledAppBar = styled(AppBar)({
     backgroundColor: "#E88E54FF",
@@ -61,8 +62,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+export function withAuth(Component: React.ComponentType<any>) {
+    return function AuthenticatedComponent(props: any) {
+        const token = localStorage.getItem('token');
+        const navigate = useNavigate();
+        if (!token) {
+            navigate('/login');
+            return null;
+        }
+
+        return <Component {...props} />;
+    };
+}
 
 export default function PrimarySearchAppBar() {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const AuthenticatedAccountCircle = withAuth(AccountCircle);
+
     return (
         <StyledAppBar position="static">
             <StyledToolbar>
@@ -72,25 +89,27 @@ export default function PrimarySearchAppBar() {
                 <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
                     SLOW COOKER
                 </Typography>
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-                </Search>
+                {!isMobile && (
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+                    </Search>
+                )}
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton size="large" aria-label="show notifications" color="inherit">
                     <NotificationsIcon />
                 </IconButton>
                 <Link to="/account" style={{ textDecoration: 'none' }}>
-                <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="account of current user"
+                        color="inherit"
+                    >
+                        <AuthenticatedAccountCircle />
+                    </IconButton>
                 </Link>
                 <IconButton size="large" aria-label="show more" color="inherit">
                 </IconButton>
