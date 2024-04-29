@@ -5,14 +5,18 @@ import { Typography, CircularProgress, Paper, Avatar, Grid } from '@mui/material
 const AccountPage: React.FC = () => {
     const apiUrl = 'http://localhost:3000/users/me';
     const [userData, setUserData] = useState<UserData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const responseData = await getData(apiUrl);
                 setUserData(responseData as UserData);
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                setError('Error fetching data');
+                setLoading(false);
             }
         };
 
@@ -20,12 +24,14 @@ const AccountPage: React.FC = () => {
     }, [apiUrl]);
 
     const renderUserData = () => {
-        if (!userData) return <CircularProgress />;
+        if (loading) return <CircularProgress />;
+        if (error) return <Typography variant="body1">{error}</Typography>;
+        if (!userData) return null;
 
         return (
             <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
                 <Typography variant="h6" gutterBottom>
-                    User Information
+                    User Informations
                 </Typography>
                 <Avatar alt="Profile Picture" src={userData.profilepicture} style={{ marginBottom: '10px' }} />
                 <Typography variant="body1">
@@ -34,13 +40,13 @@ const AccountPage: React.FC = () => {
                 <Typography variant="body1">
                     <strong>Email:</strong> {userData.email}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" style={{ marginBottom: '20px' }}>
                     <strong>My Recipes:</strong>
                 </Typography>
                 <Grid container spacing={2}>
                     {renderRecipe()}
                 </Grid>
-                <Typography variant="body1">
+                <Typography variant="body1" style={{ marginBottom: '20px', marginTop: '20px' }}>
                     <strong>My Selections:</strong>
                 </Typography>
                 <Grid container spacing={2}>
@@ -50,9 +56,16 @@ const AccountPage: React.FC = () => {
         );
     };
 
+
+
     const renderRecipe = () => {
-        if (!userData) return null;
-        if (userData.recipe.length === 0) return  <Paper elevation={2} style={{ padding: '10px' }}><Typography variant="body1">No recipes found</Typography></Paper>;
+        if (!userData || userData.recipe.length === 0) {
+            return (
+                <Paper elevation={2} style={{ padding: '10px' }}>
+                    <Typography variant="body1">No recipes found</Typography>
+                </Paper>
+            );
+        }
 
         return userData.recipe.map((recipe: RecipeData, index) => (
             <Grid item xs={12} key={index}>
@@ -66,8 +79,13 @@ const AccountPage: React.FC = () => {
     };
 
     const renderSelection = () => {
-        if (!userData) return null;
-        if (userData.selection.length === 0) return   <Paper elevation={2} style={{ padding: '10px' }}><Typography variant="body1">No selections found</Typography></Paper>;
+        if (!userData || userData.selection.length === 0) {
+            return (
+                <Paper elevation={2} style={{ padding: '10px' }}>
+                    <Typography variant="body1">No selections found</Typography>
+                </Paper>
+            );
+        }
 
         return userData.selection.map((selection, index) => (
             <Grid item xs={12} key={index}>
