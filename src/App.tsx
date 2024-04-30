@@ -5,8 +5,8 @@ import ModeToggle from './components/DarkMode/DarkMode';
 import RecipeReviewCard from "./components/Recipe/Recipe.tsx";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AccountPage from "./components/AccountPage/AccountPage.tsx";
-import AppBar from "./components/AppBar/AppBar.tsx";
 import Comment from "./components/Comment/Comment.tsx";
+import {PrimarySearchAppBar} from "./components/AppBar/AppBar.tsx";
 
 export function App() {
     return (<>
@@ -14,7 +14,7 @@ export function App() {
             <ModeToggle />
         </CssVarsProvider>
             <Router>
-                <AppBar />
+                <PrimarySearchAppBar />
                 <Routes>
                     <Route path="/" element={<LoginContainer />} />
                     <Route path="/verify" element={<RecipeReviewCard />} />
