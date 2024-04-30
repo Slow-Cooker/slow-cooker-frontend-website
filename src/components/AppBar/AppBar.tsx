@@ -70,7 +70,7 @@ export function withAuth(Component: React.ComponentType<any>) {
         const token = localStorage.getItem('token');
         const navigate = useNavigate();
         if (!token) {
-            navigate('/login');
+            navigate('/');
             return null;
         }
 
@@ -82,6 +82,7 @@ export default function PrimarySearchAppBar() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const AuthenticatedAccountCircle = withAuth(AccountCircle);
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -92,17 +93,26 @@ export default function PrimarySearchAppBar() {
         setAnchorEl(null);
     };
 
-    const navigate = useNavigate();
-
     const handleRecipe =  () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/');
+            return null;
+        }
         navigate('/verify');
     };
 
     const handleComment =  () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/');
+            return null;
+        }
         navigate('/comment');
     };
 
     const handleLogOut =  () => {
+        localStorage.removeItem('token');
         navigate('/');
     };
 

@@ -73,7 +73,7 @@ export default function RecipeReviewCard() {
         fetchRecipe();
     }, [reload]);
 
-    if (recipe === undefined || recipe === null || recipe.length === 0) {
+    if (recipe === undefined || !recipe || recipe.length === 0) {
         return (
             <Card sx={{ maxWidth: '21%', marginTop: '20%', marginLeft:'40%'}}>
                 <CardContent>

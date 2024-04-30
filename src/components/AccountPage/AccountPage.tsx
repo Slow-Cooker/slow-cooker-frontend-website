@@ -59,7 +59,7 @@ const AccountPage: React.FC = () => {
 
 
     const renderRecipe = () => {
-        if (!userData || userData.recipe.length === 0) {
+        if (!userData || !userData.recipe || userData.recipe.length === 0) {
             return (
                 <Paper elevation={2} style={{ padding: '10px' }}>
                     <Typography variant="body1">No recipes found</Typography>
@@ -79,7 +79,7 @@ const AccountPage: React.FC = () => {
     };
 
     const renderSelection = () => {
-        if (!userData || userData.selection.length === 0) {
+        if (!userData ||!userData.selection || userData.selection.length === 0) {
             return (
                 <Paper elevation={2} style={{ padding: '10px' }}>
                     <Typography variant="body1">No selections found</Typography>
