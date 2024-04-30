@@ -1,7 +1,7 @@
 import {getData, deleteData} from "../../api/call.ts";
 
 export const handleRecipe = async () => {
-    const apiUrl = 'http://localhost:3000/recipes';
+    const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/recipes`;
     try {
         const responseData = await getData(apiUrl);
         return responseData;
@@ -11,8 +11,8 @@ export const handleRecipe = async () => {
     }
 }
 
-export const handleComment = async (id: string) => {
-    const apiUrl = `http://localhost:3000/${id}/comments`;
+export const handleComment = async (id:string) => {
+    const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/${id}/comments`;
     try {
         const responseData = await getData(apiUrl);
         return responseData;
@@ -22,8 +22,8 @@ export const handleComment = async (id: string) => {
     }
 }
 
-export const deleteRecipe = async (id: string) => {
-    const apiUrl = `http://localhost:3000/recipes/${id}`;
+export const deleteRecipe = async (id_recipe: string, id_comment:string) => {
+    const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/${id_recipe}/comments/${id_comment}`;
     try {
         const responseData = await deleteData(apiUrl);
         return responseData;
