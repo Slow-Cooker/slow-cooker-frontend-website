@@ -16,9 +16,10 @@ export default function LoginFinal() {
     const [error, setError] = useState(''); // State to track login error
 
     const handleLogin = async () => {
-        const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/users/auth/login`;
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/users/auth/login`;
         const requestBody = { email, password };
         try {
+            console.log(apiUrl)
             const responseData = await postData(apiUrl, requestBody);
             localStorage.setItem('token', responseData.token);
             if (responseData.user.role === 'Admin') {

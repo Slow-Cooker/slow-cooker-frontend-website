@@ -3,12 +3,12 @@ import { getData, RecipeData, UserData } from '../../api/call.ts';
 import { Typography, CircularProgress, Paper, Avatar, Grid } from '@mui/material';
 
 const AccountPage: React.FC = () => {
-    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/users/me`;
+    const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/users/me`;
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
     useEffect(() => {
+        console.log(apiUrl);
         const fetchData = async () => {
             try {
                 const responseData = await getData(apiUrl);
