@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { handleRecipe, handleComment } from './helpers.ts';
+import { handleRecipe, handleComment, deleteRecipe } from './helpers.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -7,6 +7,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ClearIcon from '@mui/icons-material/Clear';
+import Stack from "@mui/material/Stack";
+import React from 'react';
 
 interface Recipe {
     id_recipe: string;
@@ -26,15 +29,29 @@ export default function RecipeCard() {
     const [recipes, setRecipes] = useState<Recipe[]|null>(null);
     const [comments, setComments] = useState<Comment[]|null>(null);
     const [indice, setIndice] = useState(0);
+    const [validator, setValidator] = useState(false);
 
     const changeRecipe = () => {
         setIndice((indice +1))
+    };
+
+    const clearRecipe = async (id_recipe: string, id_comment:string) => {
+        try {
+            await deleteRecipe(id_recipe, id_comment);
+            setValidator(!validator);
+        } catch (error) {
+            console.error('Delete Recipe failed:', error);
+            throw new Error('Failed to delete recipe');
+        }
     };
 
     useEffect(() => {
         const fetchRecipeAndComments = async () => {
             const recipeData = await handleRecipe();
             if (recipeData.length === 0) {
+                return;
+            }
+            if (indice >= recipeData.length) {
                 return;
             }
             const id = recipeData[indice].id_recipe;
@@ -44,7 +61,7 @@ export default function RecipeCard() {
             setRecipe(recipeData[indice])
         };
         fetchRecipeAndComments();
-    }, [indice]);
+    }, [indice, validator]);
 
     if (!recipes) {
         return (
@@ -68,11 +85,18 @@ export default function RecipeCard() {
             />
             <CardContent>
                 <Typography fontWeight={"bold"} paragraph>Comments :</Typography>
-                {comments?.map((comment, index) => (
-                    <Typography key={index} style={{ fontStyle: "italic" }} paragraph>
-                        {comment?.comment}
-                    </Typography>
-                ))}
+                    {comments?.map((comment) => (
+                        <React.Fragment key={comment.id_comment}>
+                            <Stack direction="row" spacing={2}>
+                                <Typography style={{ fontStyle: "italic" }} paragraph>
+                                    {comment?.comment}
+                                </Typography>
+                                <IconButton aria-label="clear" onClick={() => {clearRecipe(recipe!.id_recipe,comment.id_comment);}}>
+                                    <ClearIcon />
+                                </IconButton>
+                            </Stack>
+                        </React.Fragment>
+                    ))}
             </CardContent>
         </Card>
     );
