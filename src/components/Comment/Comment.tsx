@@ -32,7 +32,11 @@ export default function RecipeCard() {
     const [validator, setValidator] = useState(false);
 
     const changeRecipe = () => {
-        setIndice((indice +1))
+        if (indice === recipes!.length - 1) {
+            setIndice(0);
+        } else {
+            setIndice((indice + 1));
+        }
     };
 
     const clearRecipe = async (id_recipe: string, id_comment:string) => {
